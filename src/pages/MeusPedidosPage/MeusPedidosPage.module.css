@@ -1,0 +1,213 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 32px;
+}
+
+.alert {
+  background-color: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #ef4444;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pedidoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.info h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0 0 4px 0;
+  font-weight: 700;
+}
+
+.data {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.status svg {
+  width: 18px;
+  height: 18px;
+}
+
+.status.pendente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status.confirmado,
+.status.em_preparo {
+  background-color: #dbeafe;
+  color: #0c2340;
+}
+
+.status.saiu_entrega {
+  background-color: #c7d2fe;
+  color: #312e81;
+}
+
+.status.entregue {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status.cancelado {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.item span {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.item strong {
+  color: #333;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+.preco {
+  color: #ff6b35 !important;
+  font-size: 1.1rem !important;
+}
+
+.observacao {
+  padding: 12px;
+  background-color: #f0f9ff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 4px;
+}
+
+.observacao strong {
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.observacao p {
+  color: #666;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.itensLista {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 16px;
+}
+
+.itensLista strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.itensLista ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.itensLista li {
+  color: #666;
+  font-size: 0.95rem;
+  padding: 6px 0;
+}
+
+.footer {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.empty p {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .status {
+    align-self: flex-start;
+  }
+}
