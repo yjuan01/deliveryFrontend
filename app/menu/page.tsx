@@ -56,7 +56,8 @@ export default function MenuPage() {
     localStorage.removeItem("delivery-user");
     localStorage.removeItem("delivery-api-token");
     setUser(null);
-    router.push("/");
+    // 👇 antes ia para "/", agora volta para o próprio cardápio (/menu)
+    router.push("/menu");
   }
 
   useEffect(() => {
@@ -105,7 +106,7 @@ export default function MenuPage() {
       return { ...current, [productId]: nextQuantity };
     });
     if (delta > 0 && productName) {
-      setToast(`${productName} adicionado ao carrinho`);
+      setToast(`${productName} adicionado à sacola`);
     }
   }
 
@@ -129,44 +130,56 @@ export default function MenuPage() {
   }, [search, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
-      <div className="mx-auto max-w-7xl px-6 py-10 pb-28 sm:pb-10">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-orange-600">Menu</p>
-            <h1 className="mt-2 text-4xl font-semibold text-slate-950">Cardápio</h1>
-            <p className="mt-3 text-slate-600">Escolha produtos e adicione ao carrinho.</p>
+    <div className="min-h-screen bg-[#f5f5f5] text-[#1a1a1a]">
+      {/* Header fixo estilo iFood */}
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/restaurantes"
+              aria-label="Voltar"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-xl text-[#1a1a1a] transition hover:bg-slate-100"
+            >
+              ←
+            </Link>
+            <h1 className="text-lg font-bold text-[#1a1a1a]">Cardápio</h1>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+
+          <div className="flex flex-wrap items-center gap-2">
             {user ? (
               <button
                 type="button"
                 onClick={handleLogout}
-                className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-rose-300 hover:text-rose-700"
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] transition hover:border-[#EA1D2C] hover:text-[#EA1D2C]"
               >
                 Sair
               </button>
             ) : (
-              <Link href="/login" className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-300 hover:text-slate-900">
-                Login
+              <Link
+                href="/login"
+                className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] transition hover:border-[#EA1D2C] hover:text-[#EA1D2C]"
+              >
+                Entrar
               </Link>
             )}
-            <Link href="/carrinho" className="hidden rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600 sm:inline-block">
-              Carrinho ({totalItems})
-            </Link>
-            <Link href="/restaurantes" className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-300 hover:text-slate-900">
-              Restaurantes
+            <Link
+              href="/carrinho"
+              className="hidden items-center gap-1.5 rounded-full bg-[#EA1D2C] px-4 py-1.5 text-xs font-bold text-white transition hover:bg-[#C41625] sm:inline-flex"
+            >
+              🛍️ Sacola ({totalItems})
             </Link>
           </div>
         </div>
+      </header>
 
+      <div className="mx-auto max-w-7xl px-4 py-6 pb-28 sm:px-6 sm:pb-10">
         {!user && (
-          <div className="mb-6 rounded-3xl border border-orange-100 bg-orange-50 p-4 text-sm text-orange-700">
-            Você pode montar seu carrinho agora e fazer login na hora de finalizar o pedido.
+          <div className="mb-5 rounded-lg border border-red-100 bg-red-50 p-4 text-sm text-[#8a1119]">
+            Você pode montar sua sacola agora e fazer login na hora de finalizar o pedido.
           </div>
         )}
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative w-full sm:max-w-xs">
             <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
             <input
@@ -174,7 +187,7 @@ export default function MenuPage() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Buscar no cardápio..."
-              className="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-950 outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+              className="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-[#1a1a1a] outline-none transition focus:border-[#EA1D2C] focus:ring-2 focus:ring-red-100"
             />
           </div>
 
@@ -186,8 +199,8 @@ export default function MenuPage() {
                 onClick={() => setActiveCategory(category)}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                   activeCategory === category
-                    ? "bg-orange-500 text-white shadow-sm"
-                    : "border border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-slate-900"
+                    ? "bg-[#EA1D2C] text-white shadow-sm"
+                    : "border border-slate-200 bg-white text-slate-600 hover:border-[#EA1D2C] hover:text-[#1a1a1a]"
                 }`}
               >
                 {category !== "Todos" && categoryIcon[category] ? `${categoryIcon[category]} ` : ""}
@@ -198,79 +211,78 @@ export default function MenuPage() {
         </div>
 
         {filteredProducts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-slate-300 bg-white/80 p-14 text-center text-slate-500">
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">
             <span className="text-5xl">🔎</span>
-            <p className="mt-4 text-lg font-semibold text-slate-700">Nenhum item encontrado</p>
+            <p className="mt-4 text-base font-bold text-[#1a1a1a]">Nenhum item encontrado</p>
             <p className="mt-2 text-sm text-slate-500">Tente buscar por outro termo ou escolha outra categoria.</p>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             {filteredProducts.map((product) => {
               const quantity = cart[product.id] ?? 0;
               return (
                 <article
                   key={product.id}
-                  className={`rounded-[28px] border bg-white p-6 shadow-sm transition ${
-                    quantity > 0
-                      ? "border-orange-300 shadow-orange-100"
-                      : "border-slate-200 shadow-slate-200/40"
+                  className={`flex gap-4 rounded-lg border bg-white p-4 transition ${
+                    quantity > 0 ? "border-[#EA1D2C]" : "border-slate-200"
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-2xl">
-                        {categoryIcon[product.category] ?? "🍽️"}
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-600">{product.category}</p>
-                        <h3 className="mt-1 text-xl font-semibold text-slate-950">{product.name}</h3>
-                        <p className="mt-2 text-sm leading-6 text-slate-600">{product.description}</p>
-                      </div>
-                    </div>
-                    <span className="shrink-0 text-lg font-bold text-slate-950">{formatPrice(product.price)}</span>
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-slate-100 text-2xl">
+                    {categoryIcon[product.category] ?? "🍽️"}
                   </div>
 
-                  <div className="mt-5 flex items-center justify-between gap-3">
-                    <div className="flex flex-wrap gap-2">
-                      {product.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[11px] font-semibold uppercase tracking-wide text-[#EA1D2C]">{product.category}</p>
+                        <h3 className="mt-0.5 text-sm font-bold leading-snug text-[#1a1a1a]">{product.name}</h3>
+                      </div>
+                      <span className="shrink-0 text-sm font-bold text-[#1a1a1a]">{formatPrice(product.price)}</span>
                     </div>
+                    <p className="mt-1 line-clamp-2 text-xs text-slate-500">{product.description}</p>
 
-                    {quantity === 0 ? (
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(product.id, 1, product.name)}
-                        className="shrink-0 rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
-                      >
-                        Adicionar
-                      </button>
-                    ) : (
-                      <div className="flex shrink-0 items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5">
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, -1)}
-                          aria-label="Diminuir quantidade"
-                          className="rounded-full bg-white px-3 py-0.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100"
-                        >
-                          −
-                        </button>
-                        <span className="min-w-6 text-center text-sm font-semibold text-slate-950">{quantity}</span>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex flex-wrap gap-1.5">
+                        {product.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {quantity === 0 ? (
                         <button
                           type="button"
                           onClick={() => updateQuantity(product.id, 1, product.name)}
-                          aria-label="Aumentar quantidade"
-                          className="rounded-full bg-orange-500 px-3 py-0.5 text-sm font-semibold text-white hover:bg-orange-600"
+                          className="shrink-0 rounded-full border border-[#EA1D2C] px-4 py-1.5 text-xs font-bold text-[#EA1D2C] transition hover:bg-red-50"
                         >
-                          +
+                          Adicionar
                         </button>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="flex shrink-0 items-center gap-2 rounded-full border border-slate-200 px-2 py-1">
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(product.id, -1)}
+                            aria-label="Diminuir quantidade"
+                            className="flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold text-[#EA1D2C] transition hover:bg-red-50"
+                          >
+                            −
+                          </button>
+                          <span className="min-w-4 text-center text-sm font-bold text-[#1a1a1a]">{quantity}</span>
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(product.id, 1, product.name)}
+                            aria-label="Aumentar quantidade"
+                            className="flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold text-[#EA1D2C] transition hover:bg-red-50"
+                          >
+                            +
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </article>
               );
@@ -280,18 +292,18 @@ export default function MenuPage() {
       </div>
 
       {toast && (
-        <div className="fixed bottom-24 left-1/2 z-30 -translate-x-1/2 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-lg sm:bottom-6">
+        <div className="fixed bottom-24 left-1/2 z-30 -translate-x-1/2 rounded-full bg-[#1a1a1a] px-5 py-2.5 text-sm font-semibold text-white shadow-lg sm:bottom-6">
           ✓ {toast}
         </div>
       )}
 
       {totalItems > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-slate-200 bg-white/95 p-4 backdrop-blur sm:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-slate-200 bg-white p-4 sm:hidden">
           <Link
             href="/carrinho"
-            className="flex w-full items-center justify-between rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
+            className="flex w-full items-center justify-between rounded-full bg-[#EA1D2C] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#C41625]"
           >
-            <span>Ver carrinho ({totalItems})</span>
+            <span>Ver sacola ({totalItems})</span>
             <span>{formatPrice(cartTotal)}</span>
           </Link>
         </div>
