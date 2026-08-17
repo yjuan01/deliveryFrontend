@@ -8,142 +8,115 @@ Arquivo principal (README.md) contendo:
 - Problema que resolve;
 - Objetivo;
 - Público-alvo.
+# Frontend — Delivery
 
-## Tecnologias Utilizadas
+Este repositório contém o frontend da aplicação Delivery (React + Vite + TypeScript).
 
-Lista completa de:
+Resumo: interface web para clientes (navegar por restaurantes, adicionar ao carrinho, realizar pedidos) e painel administrativo para gerenciar restaurantes e usuários.
 
-- Linguagens;
-- Frameworks;
-- Banco de dados;
-- Ferramentas.
+## 1. Introdução
 
-## Arquitetura do Sistema
+- Nome do projeto: Delivery (Frontend)
+- Problema: fornecer uma interface amigável para realizar pedidos e gerenciar restaurantes.
+- Objetivo: criar uma experiência simples e responsiva semelhante a apps de delivery.
+- Público-alvo: clientes, administradores e avaliadores.
 
-Explicação geral:
+## 2. Tecnologias
 
-- Como os sistemas se comunicam;
-- Fluxo de dados;
-- Estrutura do projeto.
+- TypeScript, React, Vite
+- react-router-dom, axios
+- CSS Modules (styles por componente)
+- Context API para `Auth` e `Carrinho`
 
-Sugestões:
+## 3. Estrutura do projeto
 
-- Diagrama de arquitetura;
-- Diagrama de comunicação;
-- Fluxograma.
+- `src/pages/` — telas principais (Home, Login, Registro, Restaurante, Carrinho, MeusPedidos, Admin)
+- `src/components/` — componentes reutilizáveis (Header, Card, Button, AdminRoute)
+- `src/contexts/` — `AuthContext`, `CarrinhoContext`
+- `src/services/api.ts` — cliente HTTP central (usa `VITE_API_URL`)
+- `src/types` — tipos TypeScript
 
-## Como Executar o Projeto
+## 4. Rotas e telas
 
-Passo a passo para execução:
+- `/` — HomePage (lista restaurantes)
+- `/login` — LoginPage
+- `/registrar` — RegistroPage
+- `/restaurante/:id` — RestaurantePage (produtos, adicionar ao carrinho)
+- `/carrinho` — CarrinhoPage
+- `/meus-pedidos` — MeusPedidosPage
+- `/admin` — AdminPage (apenas `role: admin`)
 
-- Instalação;
-- Dependências;
-- Variáveis de ambiente;
-- Comandos;
-- Build;
-- Deploy local.
+## 5. Integração com a API
 
----
+Configure `VITE_API_URL` apontando para o backend. Endpoints usados:
 
-# 2. Documentação do Backend
+- `POST /usuarios/login` — login
+- `POST /usuarios/registrar` — registrar usuário
+- `GET /usuarios/perfil` — obter perfil (autenticado)
+- `GET /restaurantes` — listar restaurantes
+- `GET /restaurantes/:id` — obter restaurante
+- `POST|PUT|DELETE /restaurantes` — criar/atualizar/deletar (admin)
+- `GET /produtos/restaurante/:restauranteId` — listar produtos
+- `POST /pedidos` — criar pedido
 
-A documentação do backend deve conter:
+Observação: o token é salvo em `localStorage` e enviado automaticamente pelo `api.ts`.
 
-## Arquitetura
+## 6. Como executar (desenvolvimento)
 
-- Estrutura de camadas;
-- Organização do código;
-- Padrões utilizados.
+1. Instale dependências:
 
-## API
+```bash
+cd deliveryFrontend
+npm install
+```
 
-Documentar todas as rotas:
+2. Variáveis de ambiente (opcional):
 
-| Método | Rota   | Descrição      |
-| ------ | ------ | -------------- |
-| GET    | /users | Lista usuários |
-| POST   | /login | Realiza login  |
+Crie um arquivo `.env` na pasta `deliveryFrontend` com:
 
-Para cada rota:
+```
+VITE_API_URL=http://localhost:3001
+```
 
-- Parâmetros;
-- Body;
-- Respostas;
-- Códigos HTTP;
-- Exemplos de requisição.
+3. Rodar em modo de desenvolvimento:
 
-## Autenticação
+```bash
+npm run dev
+```
 
-- JWT;
-- Sessão;
-- OAuth;
-- Controle de acesso.
+4. Build para produção:
 
----
+```bash
+npm run build
+npm run preview
+```
 
-# 3. Banco de Dados
+## 7. Admin
 
-A documentação do banco de dados deve conter:
+- Usuário admin de exemplo (seed do backend): `admin@delivery.com` / `admin123`.
+- Acessar `/admin` após login exibe painel com busca, edição completa de restaurantes e gerenciamento de usuários.
 
-## Collections/tabelas;
-## Relacionamentos;
-## Estrutura dos dados.
+## 8. Estilização e UX
 
----
+- Os estilos usam CSS Modules. O `AdminPage` já contém melhorias visuais (cartões, gradiente, animações de expansão) inspiradas em UIs modernas.
 
-# 4. Documentação do Frontend Web
+## 9. Dicas para desenvolvimento
 
-A documentação do frontend deve conter:
+- Ao alterar tipos ou schema do backend, atualize `src/types` e `api.ts`.
+- Para depurar requests, abra DevTools → Network.
 
-## Telas
+## 10. Contribuição
 
-Para cada tela:
-
-- Nome;
-- Objetivo;
-- Funcionalidades.
-
-## Navegação
-
-Explicar:
-
-- Rotas;
-- Fluxo do usuário;
-- Estrutura do app.
+- Use branches por feature e abra PRs com descrição dos testes.
 
 ---
 
-# 5. Documentação do Aplicativo Mobile
+Se quiser, posso:
+- rodar o frontend agora (`npm run dev`),
+- adicionar instruções de deploy (Vercel/Netlify),
+- ou gerar imagens/diagramas para a seção de arquitetura.
 
-A documentação do aplicativo deve conter:
-
-## Telas
-
-- Objetivo;
-- Navegação;
-- Recursos utilizados.
-
-## Navegação
-
-Explicar:
-
-- Rotas;
-- Fluxo do usuário;
-- Estrutura do app.
-
-## Recursos do Dispositivo
-
-Caso utilizados:
-
-- GPS;
-- Câmera;
-- Bluetooth;
-- Notificações;
-- Sensores.
-
----
-
-# 6. Documentação do Sistema IoT
+Diga qual opção prefere.
 
 A documentação do sistema IoT deve conter:
 
