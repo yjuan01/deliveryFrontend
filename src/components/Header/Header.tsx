@@ -37,6 +37,11 @@ export const Header = () => {
 
           {logado && (
             <>
+              {usuario?.role === 'admin' && (
+                <Link to="/admin" className={styles.link}>
+                  ADM
+                </Link>
+              )}
               <Link to="/meus-pedidos" className={styles.link}>
                 Meus Pedidos
               </Link>

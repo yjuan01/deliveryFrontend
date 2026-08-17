@@ -5,6 +5,8 @@ import { RegistroPage } from './pages/RegistroPage/RegistroPage';
 import { RestaurantePage } from './pages/RestaurantePage/RestaurantePage';
 import { CarrinhoPage } from './pages/CarrinhoPage/CarrinhoPage';
 import { MeusPedidosPage } from './pages/MeusPedidosPage/MeusPedidosPage';
+import { AdminPage } from './pages/AdminPage/AdminPage';
+import AdminRoute from './components/AdminRoute/AdminRoute';
 
 export const routes = [
   {
@@ -30,6 +32,14 @@ export const routes = [
   {
     path: '/meus-pedidos',
     element: <MeusPedidosPage />,
+  },
+  {
+    path: '/admin',
+    element: (
+      <AdminRoute>
+        <AdminPage />
+      </AdminRoute>
+    ),
   },
   {
     path: '*',

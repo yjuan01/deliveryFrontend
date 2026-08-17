@@ -48,6 +48,21 @@ class ApiService {
     return data;
   }
 
+  // ─── USUÁRIOS (admin) ───────────────────────────────────────────────────
+  async listarUsuarios(): Promise<Usuario[]> {
+    const { data } = await this.api.get('/usuarios');
+    return data;
+  }
+
+  async atualizarUsuario(id: number, usuario: Partial<Usuario>): Promise<Usuario> {
+    const { data } = await this.api.put(`/usuarios/${id}`, usuario);
+    return data;
+  }
+
+  async deletarUsuario(id: number): Promise<void> {
+    await this.api.delete(`/usuarios/${id}`);
+  }
+
   // ─── RESTAURANTES ────────────────────────────────────────────────────────
   async listarRestaurantes(): Promise<Restaurante[]> {
     const { data } = await this.api.get('/restaurantes');
