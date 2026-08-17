@@ -1,17 +1,21 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 32px 24px;
+  background-color: #f5f5f5;
 }
 
 .backBtn {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  font-weight: 600;
+  border-radius: 24px !important;
 }
 
 .content {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 360px;
   gap: 24px;
+  align-items: start;
 }
 
 .itens {
@@ -20,63 +24,79 @@
 }
 
 .itens h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #1f1f1f;
   margin-bottom: 24px;
 }
 
 .alert {
-  background-color: #fee;
-  color: #c33;
-  padding: 12px;
-  border-radius: 8px;
+  background-color: #fdecec;
+  color: #c41724;
+  padding: 14px 16px;
+  border-radius: 12px;
   margin-bottom: 20px;
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid #ea1d2c;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .listaItens {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .itemCard {
-  padding: 16px !important;
+  padding: 18px !important;
+  border: none !important;
+  border-radius: 16px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  transition: box-shadow 0.2s ease;
+}
+
+.itemCard:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
 }
 
 .itemHeader {
   display: flex;
   justify-content: space-between;
   align-items: start;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .itemHeader h3 {
-  font-size: 1.1rem;
-  color: #333;
+  font-size: 1.05rem;
+  color: #1f1f1f;
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .removeBtn {
   background: none;
   border: none;
   cursor: pointer;
-  color: #ef4444;
+  color: #a0a0a0;
   display: flex;
   align-items: center;
-  transition: color 0.2s;
+  padding: 6px;
+  border-radius: 50%;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .removeBtn:hover {
-  color: #dc2626;
+  color: #ea1d2c;
+  background-color: #fdecec;
 }
 
 .itemPreco {
-  color: #ff6b35;
-  font-weight: 600;
-  margin: 0 0 12px 0;
+  color: #6b6b6b;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin: 0 0 14px 0;
 }
 
 .itemControles {
@@ -88,9 +108,9 @@
 .quantidade {
   display: flex;
   align-items: center;
-  gap: 8px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  gap: 4px;
+  border: 1.5px solid #ea1d2c;
+  border-radius: 20px;
   overflow: hidden;
 }
 
@@ -98,56 +118,65 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px 10px;
+  padding: 7px 12px;
   display: flex;
   align-items: center;
-  color: #333;
-  transition: background-color 0.2s;
+  color: #ea1d2c;
+  transition: background-color 0.2s ease;
 }
 
 .quantidade button:hover {
-  background-color: #f0f0f0;
+  background-color: #fdecec;
 }
 
 .quantidade span {
-  padding: 0 12px;
-  min-width: 35px;
+  padding: 0 10px;
+  min-width: 30px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
+  color: #1f1f1f;
+  font-size: 0.9rem;
 }
 
 .subtotal {
-  font-weight: 700;
-  color: #333;
+  font-weight: 800;
+  color: #1f1f1f;
   font-size: 1rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .empty {
   text-align: center;
-  padding: 60px 20px;
-  color: #999;
+  padding: 80px 20px;
+  color: #9b9b9b;
 }
 
 .empty h2 {
-  font-size: 1.5rem;
-  margin-bottom: 12px;
-  color: #333;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #1f1f1f;
 }
 
 .empty p {
   margin-bottom: 24px;
+  font-size: 0.95rem;
 }
 
 .resumo {
   height: fit-content;
   position: sticky;
   top: 80px;
+  border: none !important;
+  border-radius: 16px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
 }
 
 .resumo h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1f1f1f;
   margin-bottom: 20px;
 }
 
@@ -157,27 +186,27 @@
   gap: 12px;
   margin: 20px 0;
   padding-bottom: 20px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 1px dashed #e0e0e0;
 }
 
 .resumoItem {
   display: flex;
   justify-content: space-between;
-  color: #666;
-  font-size: 0.95rem;
+  color: #6b6b6b;
+  font-size: 0.9rem;
 }
 
 .resumoTotal {
   display: flex;
   justify-content: space-between;
   font-size: 1.2rem;
-  font-weight: 700;
-  color: #ff6b35;
+  font-weight: 800;
+  color: #ea1d2c;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 12px;
+    padding: 16px;
   }
 
   .content {

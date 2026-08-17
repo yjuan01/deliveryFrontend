@@ -68,7 +68,7 @@ export const CarrinhoPage = () => {
 
       await api.criarPedido(pedidoData);
       limparCarrinho();
-      alert('Pedido realizado com sucesso! 🎉');
+      alert('Pedido realizado com sucesso!');
       navigate('/meus-pedidos');
     } catch (error: unknown) {
       const mensagem =

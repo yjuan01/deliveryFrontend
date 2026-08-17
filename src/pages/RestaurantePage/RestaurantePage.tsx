@@ -6,7 +6,7 @@ import { useCarrinho } from '../../contexts/CarrinhoContext';
 import { useAuth } from '../../contexts/useAuth';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
-import { ArrowLeft, Plus, Minus } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, MapPin, Phone } from 'lucide-react';
 import styles from './RestaurantePage.module.css';
 
 export const RestaurantePage = () => {
@@ -83,8 +83,16 @@ export const RestaurantePage = () => {
       <Card className={styles.header}>
         <h1>{restaurante.nome}</h1>
         <p className={styles.descricao}>{restaurante.descricao}</p>
-        {restaurante.endereco && <p className={styles.endereco}>📍 {restaurante.endereco}</p>}
-        {restaurante.telefone && <p className={styles.telefone}>📞 {restaurante.telefone}</p>}
+        {restaurante.endereco && (
+          <p className={styles.endereco}>
+            <MapPin size={16} /> {restaurante.endereco}
+          </p>
+        )}
+        {restaurante.telefone && (
+          <p className={styles.telefone}>
+            <Phone size={16} /> {restaurante.telefone}
+          </p>
+        )}
       </Card>
 
       <h2 className={styles.title}>Cardápio</h2>

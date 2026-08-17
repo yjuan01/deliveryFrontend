@@ -25,8 +25,24 @@ export const LoginPage = () => {
     } catch (error: unknown) {
       const mensagem =
         typeof error === 'object' && error !== null && 'response' in error
-          ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
+          ? (error as {
+              response?: {
+                data?: {
+                  message?: string;
+                  error?: string;
+                };
+              };
+            }).response?.data?.message ??
+            (error as {
+              response?: {
+                data?: {
+                  message?: string;
+                  error?: string;
+                };
+              };
+            }).response?.data?.error
           : undefined;
+
       setErro(mensagem || 'Erro ao fazer login');
     } finally {
       setCarregando(false);

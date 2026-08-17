@@ -3,31 +3,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  background-color: #ea1d2c;
   padding: 20px;
 }
 
 .card {
   max-width: 400px;
   width: 100%;
-  background-color: white;
+  background-color: #ffffff;
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 32px !important;
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #1f1f1f;
   text-align: center;
   margin-bottom: 8px;
 }
 
 .alert {
-  background-color: #fee;
-  color: #c33;
-  padding: 12px;
-  border-radius: 8px;
+  background-color: #fdecec;
+  color: #c41724;
+  padding: 14px 16px;
+  border-radius: 12px;
   margin-bottom: 20px;
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid #ea1d2c;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .form {
@@ -39,13 +45,13 @@
 
 .footer {
   text-align: center;
-  color: #666;
-  font-size: 0.95rem;
+  color: #6b6b6b;
+  font-size: 0.9rem;
 }
 
 .footer a {
-  color: #ff6b35;
-  font-weight: 600;
+  color: #ea1d2c;
+  font-weight: 700;
   text-decoration: none;
 }
 

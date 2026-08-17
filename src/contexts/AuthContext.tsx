@@ -6,9 +6,22 @@ import api from '../services/api';
 
 const getErrorMessage = (error: unknown, fallback: string) => {
   if (typeof error === 'object' && error !== null && 'response' in error) {
-    const response = (error as { response?: { data?: { message?: string } } }).response;
-    return response?.data?.message ?? fallback;
+    const response = (error as {
+      response?: {
+        data?: {
+          message?: string;
+          error?: string;
+        };
+      };
+    }).response;
+
+    return response?.data?.message ?? response?.data?.error ?? fallback;
   }
+
+  if (typeof error === 'object' && error !== null && 'message' in error) {
+    return (error as { message?: string }).message ?? fallback;
+  }
+
   return fallback;
 };
 

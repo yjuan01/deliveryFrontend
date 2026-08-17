@@ -34,27 +34,28 @@ export const MeusPedidosPage = () => {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
 
-  const carregarPedidos = async () => {
-    try {
-      setCarregando(true);
-      const data = await api.listarMeusPedidos();
-      setPedidos(data);
-      setErro('');
-    } catch (error) {
-      setErro('Erro ao carregar pedidos');
-      console.error(error);
-    } finally {
-      setCarregando(false);
-    }
-  };
-
   useEffect(() => {
     if (!logado) {
       navigate('/login');
       return;
     }
-    carregarPedidos();
-  }, [logado, navigate, carregarPedidos]);
+
+    const carregarPedidos = async () => {
+      try {
+        setCarregando(true);
+        const data = await api.listarMeusPedidos();
+        setPedidos(data);
+        setErro('');
+      } catch (error) {
+        setErro('Erro ao carregar pedidos');
+        console.error(error);
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    void carregarPedidos();
+  }, [logado, navigate]);
 
   if (carregando) {
     return <div className={styles.container}><p>Carregando pedidos...</p></div>;

@@ -36,7 +36,7 @@ export const HomePage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.hero}>
-        <h1>Bem-vindo ao FoodDelivery 🍕</h1>
+        <h1>Bem-vindo ao FoodDelivery</h1>
         <p>Escolha um restaurante e comece a pedir</p>
       </div>
 
