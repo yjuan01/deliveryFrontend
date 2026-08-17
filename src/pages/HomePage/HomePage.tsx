@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import type { Restaurante } from '../../types';
 import api from '../../services/api';
 import { Card } from '../../components/Card/Card';
-import { MapPin, Phone } from 'lucide-react';
+import { MapPin, Phone, UtensilsCrossed, ArrowRight } from 'lucide-react';
 import styles from './HomePage.module.css';
 
 export const HomePage = () => {
@@ -29,13 +29,36 @@ export const HomePage = () => {
     }
   };
 
+  const getIniciais = (nome: string) =>
+    nome
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((p) => p[0])
+      .join('')
+      .toUpperCase();
+
   if (carregando) {
-    return <div className={styles.container}><p>Carregando restaurantes...</p></div>;
+    return (
+      <div className={styles.container}>
+        <div className={styles.hero}>
+          <span className={styles.badge}>🍔 Peça agora</span>
+          <h1>Bem-vindo ao FoodDelivery</h1>
+          <p>Escolha um restaurante e comece a pedir</p>
+        </div>
+        <div className={styles.grid}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className={styles.skeletonCard} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.hero}>
+        <span className={styles.badge}>🍔 Peça agora</span>
         <h1>Bem-vindo ao FoodDelivery</h1>
         <p>Escolha um restaurante e comece a pedir</p>
       </div>
@@ -44,40 +67,51 @@ export const HomePage = () => {
 
       {restaurantes.length === 0 ? (
         <div className={styles.empty}>
+          <UtensilsCrossed size={40} strokeWidth={1.5} />
           <p>Nenhum restaurante disponível no momento</p>
         </div>
       ) : (
         <div className={styles.grid}>
           {restaurantes.map((restaurante) => (
-            <Link 
-              key={restaurante.id} 
+            <Link
+              key={restaurante.id}
               to={`/restaurante/${restaurante.id}`}
               className={styles.link}
             >
               <Card className={styles.restauranteCard}>
-                <div className={styles.header}>
-                  <h2>{restaurante.nome}</h2>
+                <div className={styles.cover}>
+                  <span className={styles.coverInitials}>
+                    {getIniciais(restaurante.nome)}
+                  </span>
                 </div>
 
-                <p className={styles.descricao}>{restaurante.descricao}</p>
+                <div className={styles.body}>
+                  <div className={styles.header}>
+                    <h2>{restaurante.nome}</h2>
+                  </div>
 
-                <div className={styles.info}>
-                  {restaurante.endereco && (
-                    <div className={styles.infoItem}>
-                      <MapPin size={16} />
-                      <span>{restaurante.endereco}</span>
-                    </div>
-                  )}
-                  {restaurante.telefone && (
-                    <div className={styles.infoItem}>
-                      <Phone size={16} />
-                      <span>{restaurante.telefone}</span>
-                    </div>
-                  )}
-                </div>
+                  <p className={styles.descricao}>{restaurante.descricao}</p>
 
-                <div className={styles.footer}>
-                  <span className={styles.cta}>Ver menu →</span>
+                  <div className={styles.info}>
+                    {restaurante.endereco && (
+                      <div className={styles.infoItem}>
+                        <MapPin size={15} />
+                        <span>{restaurante.endereco}</span>
+                      </div>
+                    )}
+                    {restaurante.telefone && (
+                      <div className={styles.infoItem}>
+                        <Phone size={15} />
+                        <span>{restaurante.telefone}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.footer}>
+                    <span className={styles.cta}>
+                      Ver menu <ArrowRight size={16} />
+                    </span>
+                  </div>
                 </div>
               </Card>
             </Link>

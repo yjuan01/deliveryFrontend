@@ -33,6 +33,7 @@ export const MeusPedidosPage = () => {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
+  const [cancelandoId, setCancelandoId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!logado) {
@@ -56,6 +57,26 @@ export const MeusPedidosPage = () => {
 
     void carregarPedidos();
   }, [logado, navigate]);
+
+  const handleCancelarPedido = async (pedidoId: number) => {
+    if (!confirm('Tem certeza que deseja cancelar este pedido?')) {
+      return;
+    }
+
+    setCancelandoId(pedidoId);
+    try {
+      const pedidoAtualizado = await api.cancelarPedido(pedidoId);
+      setPedidos((prev) =>
+        prev.map((p) => (p.id === pedidoId ? pedidoAtualizado : p))
+      );
+      setErro('');
+    } catch (error) {
+      setErro('Erro ao cancelar pedido. Tente novamente.');
+      console.error(error);
+    } finally {
+      setCancelandoId(null);
+    }
+  };
 
   if (carregando) {
     return <div className={styles.container}><p>Carregando pedidos...</p></div>;
@@ -135,6 +156,17 @@ export const MeusPedidosPage = () => {
                 <Button variant="secondary" onClick={() => navigate(`/`)}>
                   Fazer novo pedido
                 </Button>
+                {pedido.status !== 'cancelado' && 
+                 pedido.status !== 'entregue' && 
+                 pedido.status !== 'saiu_entrega' && (
+                  <Button 
+                    variant="primary" 
+                    onClick={() => handleCancelarPedido(pedido.id)}
+                    disabled={cancelandoId === pedido.id}
+                  >
+                    {cancelandoId === pedido.id ? 'Cancelando...' : 'Cancelar Pedido'}
+                  </Button>
+                )}
               </div>
             </Card>
           ))}

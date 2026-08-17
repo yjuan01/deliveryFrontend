@@ -7,6 +7,7 @@ export const AdminPage = () => {
   const { usuario } = useAuth();
   const [restaurantes, setRestaurantes] = useState<any[]>([]);
   const [usuarios, setUsuarios] = useState<any[]>([]);
+  const [produtos, setProdutos] = useState<any[]>([]);
   const [searchRestaurant, setSearchRestaurant] = useState('');
   const [searchUser, setSearchUser] = useState('');
   const [nome, setNome] = useState('');
@@ -30,6 +31,18 @@ export const AdminPage = () => {
   const [editTaxa, setEditTaxa] = useState<number | ''>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
+  // Estados para gerenciar produtos
+  const [selectedRestauranteId, setSelectedRestauranteId] = useState<number | null>(null);
+  const [produtoNome, setProdutoNome] = useState('');
+  const [produtoDescricao, setProdutoDescricao] = useState('');
+  const [produtoPreco, setProdutoPreco] = useState<number | ''>('');
+  const [produtoDisponivel, setProdutoDisponivel] = useState(true);
+  const [editingProdutoId, setEditingProdutoId] = useState<number | null>(null);
+  const [editProdutoNome, setEditProdutoNome] = useState('');
+  const [editProdutoDescricao, setEditProdutoDescricao] = useState('');
+  const [editProdutoPreco, setEditProdutoPreco] = useState<number | ''>('');
+  const [editProdutoDisponivel, setEditProdutoDisponivel] = useState(true);
 
   useEffect(() => {
     if (!usuario || usuario.role !== 'admin') return;
@@ -47,6 +60,24 @@ export const AdminPage = () => {
 
     void fetchData();
   }, [usuario]);
+
+  // Carregar produtos quando restaurante é selecionado
+  useEffect(() => {
+    const loadProdutos = async () => {
+      if (!selectedRestauranteId) {
+        setProdutos([]);
+        return;
+      }
+      try {
+        const prods = await api.listarProdutosPorRestaurante(selectedRestauranteId);
+        setProdutos(prods);
+      } catch (err) {
+        console.error(err);
+        setError('Erro ao carregar produtos');
+      }
+    };
+    void loadProdutos();
+  }, [selectedRestauranteId]);
 
   const filteredRestaurantes = restaurantes.filter((r) => {
     const q = searchRestaurant.trim().toLowerCase();
@@ -108,7 +139,71 @@ export const AdminPage = () => {
       await api.deletarUsuario(id);
       setUsuarios((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
-      alert('Erro ao deletar usuário');
+      console.error('Erro ao deletar usuário:', err);
+      const errorMsg = err instanceof Error ? err.message : 'Erro ao deletar usuário';
+      setError(`Erro ao deletar usuário: ${errorMsg}`);
+    }
+  };
+
+  const handleCreateProduto = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedRestauranteId) {
+      alert('Selecione um restaurante');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      const payload: any = {
+        nome: produtoNome,
+        preco: Number(produtoPreco),
+        disponivel: produtoDisponivel,
+        restauranteId: selectedRestauranteId,
+      };
+      if (produtoDescricao) payload.descricao = produtoDescricao;
+
+      const novo = await api.criarProduto(payload);
+      setProdutos((prev) => [...prev, novo]);
+      setProdutoNome('');
+      setProdutoDescricao('');
+      setProdutoPreco('');
+      setProdutoDisponivel(true);
+    } catch (err) {
+      setError('Erro ao criar prato');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateProduto = async (id: number) => {
+    setLoading(true);
+    try {
+      const payload: any = {
+        nome: editProdutoNome,
+        preco: Number(editProdutoPreco),
+        disponivel: editProdutoDisponivel,
+      };
+      if (editProdutoDescricao) payload.descricao = editProdutoDescricao;
+
+      const updated = await api.atualizarProduto(id, payload);
+      setProdutos((prev) => prev.map((p) => p.id === id ? updated : p));
+      setEditingProdutoId(null);
+    } catch (err) {
+      alert('Erro ao salvar alterações');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteProduto = async (id: number) => {
+    if (!confirm('Confirma exclusão do prato?')) return;
+    try {
+      await api.deletarProduto(id);
+      setProdutos((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error('Erro ao deletar prato:', err);
+      const errorMsg = err instanceof Error ? err.message : 'Erro ao deletar prato';
+      setError(`Erro ao deletar prato: ${errorMsg}`);
     }
   };
 
@@ -166,7 +261,9 @@ export const AdminPage = () => {
                       await api.deletarRestaurante(r.id);
                       setRestaurantes((prev) => prev.filter((p) => p.id !== r.id));
                     } catch (err) {
-                      alert('Erro ao deletar restaurante');
+                      console.error('Erro ao deletar restaurante:', err);
+                      const errorMsg = err instanceof Error ? err.message : 'Erro ao deletar restaurante';
+                      setError(`Erro ao deletar restaurante: ${errorMsg}`);
                     }
                   }}>Deletar</button>
                 </div>
@@ -211,6 +308,127 @@ export const AdminPage = () => {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Gerenciar Pratos (Produtos)</h2>
+        
+        <div style={{marginBottom: 16}}>
+          <label style={{display: 'block', marginBottom: 8, fontWeight: 'bold'}}>Selecione um Restaurante:</label>
+          <select 
+            value={selectedRestauranteId || ''} 
+            onChange={(e) => setSelectedRestauranteId(e.target.value ? Number(e.target.value) : null)}
+            style={{padding: 8, width: '100%', borderRadius: 4, border: '1px solid #ccc'}}
+          >
+            <option value="">-- Selecione um restaurante --</option>
+            {restaurantes.map((r) => (
+              <option key={r.id} value={r.id}>{r.nome}</option>
+            ))}
+          </select>
+        </div>
+
+        {selectedRestauranteId && (
+          <>
+            <form onSubmit={handleCreateProduto} className={styles.form}>
+              <input 
+                placeholder="Nome do prato" 
+                value={produtoNome} 
+                onChange={(e) => setProdutoNome(e.target.value)} 
+                required 
+              />
+              <input 
+                placeholder="Descrição" 
+                value={produtoDescricao} 
+                onChange={(e) => setProdutoDescricao(e.target.value)} 
+              />
+              <input 
+                type="number" 
+                placeholder="Preço" 
+                value={produtoPreco as any} 
+                onChange={(e) => setProdutoPreco(e.target.value === '' ? '' : Number(e.target.value))} 
+                step="0.01"
+                required 
+              />
+              <label style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                <input 
+                  type="checkbox" 
+                  checked={produtoDisponivel} 
+                  onChange={(e) => setProdutoDisponivel(e.target.checked)} 
+                />
+                Disponível
+              </label>
+              <button type="submit" disabled={loading}>{loading ? 'Criando...' : 'Criar Prato'}</button>
+            </form>
+
+            <ul className={styles.list}>
+              {produtos.map((p) => (
+                <li key={p.id} className={styles.restaurantItem}>
+                  <div className={styles.restaurantHeader}>
+                    <div className={styles.restaurantInfo}>
+                      <div>
+                        <div className={styles.restaurantName}>{p.nome}</div>
+                        <div className={styles.chip}>
+                          R$ {Number(p.preco).toFixed(2)} • {p.disponivel ? '✅ Disponível' : '❌ Indisponível'}
+                        </div>
+                        {p.descricao && <div style={{fontSize: '0.9em', color: '#666', marginTop: 4}}>{p.descricao}</div>}
+                      </div>
+                    </div>
+                    <div className={styles.actions}>
+                      <button onClick={() => {
+                        setEditingProdutoId(p.id === editingProdutoId ? null : p.id);
+                        setEditProdutoNome(p.nome || '');
+                        setEditProdutoDescricao(p.descricao || '');
+                        setEditProdutoPreco(p.preco || '');
+                        setEditProdutoDisponivel(p.disponivel || true);
+                      }}>
+                        {editingProdutoId === p.id ? 'Fechar' : 'Editar'}
+                      </button>
+                      <button className={styles.primary} onClick={() => handleDeleteProduto(p.id)}>Deletar</button>
+                    </div>
+                  </div>
+
+                  <div className={`${styles.expandable} ${editingProdutoId === p.id ? styles.expanded : ''}`}>
+                    {editingProdutoId === p.id && (
+                      <div className={styles.editRow}>
+                        <input 
+                          value={editProdutoNome} 
+                          onChange={(e) => setEditProdutoNome(e.target.value)} 
+                          placeholder="Nome do prato" 
+                        />
+                        <input 
+                          value={editProdutoDescricao} 
+                          onChange={(e) => setEditProdutoDescricao(e.target.value)} 
+                          placeholder="Descrição" 
+                        />
+                        <input 
+                          type="number" 
+                          value={editProdutoPreco as any} 
+                          onChange={(e) => setEditProdutoPreco(e.target.value === '' ? '' : Number(e.target.value))} 
+                          placeholder="Preço" 
+                          step="0.01"
+                        />
+                        <label style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                          <input 
+                            type="checkbox" 
+                            checked={editProdutoDisponivel} 
+                            onChange={(e) => setEditProdutoDisponivel(e.target.checked)} 
+                          />
+                          Disponível
+                        </label>
+                        <div className={styles.rowActions}>
+                          <button onClick={() => handleUpdateProduto(p.id)} disabled={loading}>
+                            {loading ? 'Salvando...' : 'Salvar'}
+                          </button>
+                          <button onClick={() => setEditingProdutoId(null)}>Cancelar</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </section>
 
       <section className={styles.section}>

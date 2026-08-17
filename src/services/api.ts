@@ -146,6 +146,10 @@ class ApiService {
     return data;
   }
 
+  async cancelarPedido(id: number): Promise<Pedido> {
+    return this.atualizarStatusPedido(id, 'cancelado');
+  }
+
   async deletarPedido(id: number): Promise<void> {
     await this.api.delete(`/pedidos/${id}`);
   }
