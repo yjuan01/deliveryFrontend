@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/useAuth';
 import { useCarrinho } from '../../contexts/CarrinhoContext';
-import { ShoppingCart, LogOut, Menu } from 'lucide-react';
+import { ShoppingCart, LogOut, Menu, User } from 'lucide-react';
 import styles from './Header.module.css';
 import { useState } from 'react';
 
@@ -10,6 +10,7 @@ export const Header = () => {
   const { itens } = useCarrinho();
   const navigate = useNavigate();
   const [menuAberto, setMenuAberto] = useState(false);
+  const [perfilMenuAberto, setPerfilMenuAberto] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -49,11 +50,35 @@ export const Header = () => {
                 <ShoppingCart size={20} />
                 {itens.length > 0 && <span className={styles.badge}>{itens.length}</span>}
               </Link>
-              <div className={styles.user}>
-                <span className={styles.username}>{usuario?.nome}</span>
-                <button onClick={handleLogout} className={styles.logoutBtn} title="Logout">
-                  <LogOut size={20} />
+              <div className={styles.perfilMenu}>
+                <button 
+                  className={styles.perfilBtn}
+                  onClick={() => setPerfilMenuAberto(!perfilMenuAberto)}
+                  title="Menu de perfil"
+                >
+                  <User size={20} />
+                  <span className={styles.username}>{usuario?.nome}</span>
                 </button>
+                {perfilMenuAberto && (
+                  <div className={styles.dropdown}>
+                    <Link 
+                      to="/perfil" 
+                      className={styles.dropdownLink}
+                      onClick={() => setPerfilMenuAberto(false)}
+                    >
+                      <User size={16} /> Editar Perfil
+                    </Link>
+                    <button 
+                      className={styles.dropdownBtn}
+                      onClick={() => {
+                        handleLogout();
+                        setPerfilMenuAberto(false);
+                      }}
+                    >
+                      <LogOut size={16} /> Sair
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           )}
