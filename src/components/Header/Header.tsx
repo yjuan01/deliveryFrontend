@@ -20,9 +20,9 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link to="/" className={styles.logo}>
-          🍕 FoodDelivery
-        </Link>
+       <Link to="/" className={styles.logo}>
+            Delivery<span className={styles.logoAccent}>food</span>
+          </Link>
 
         <button 
           className={styles.menuToggle}

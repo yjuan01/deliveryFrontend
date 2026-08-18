@@ -6,18 +6,18 @@ export interface Usuario {
   role: 'cliente' | 'admin';
   criadoEm: string;
 }
-
+ 
 export interface LoginRequest {
   email: string;
   senha: string;
 }
-
+ 
 export interface RegistroRequest {
   nome: string;
   email: string;
   senha: string;
 }
-
+ 
 // Restaurante
 export interface Restaurante {
   id: number;
@@ -25,20 +25,27 @@ export interface Restaurante {
   descricao?: string;
   endereco: string;
   telefone?: string;
+  categoria?: string;
+  imagemCapa?: string;
+  imagemPerfil?: string;
+  tempo?: string;
+  nota?: number;
+  taxa?: number;
   criadoEm: string;
 }
-
+ 
 // Produto
 export interface Produto {
   id: number;
   nome: string;
   descricao?: string;
   preco: number;
+  imagemUrl?: string;
   disponivel: boolean;
   restauranteId: number;
   criadoEm: string;
 }
-
+ 
 // Pedido
 export interface Pedido {
   id: number;
@@ -51,7 +58,7 @@ export interface Pedido {
   restauranteId: number;
   itens: ItemPedido[];
 }
-
+ 
 // Item do Pedido
 export interface ItemPedido {
   id: number;
@@ -60,14 +67,14 @@ export interface ItemPedido {
   pedidoId: number;
   produtoId: number;
 }
-
+ 
 // Carrinho
 export interface CarrinhoItem {
   produtoId: number;
   produto: Produto;
   quantidade: number;
 }
-
+ 
 export interface CarrinhoContext {
   itens: CarrinhoItem[];
   restauranteId: number | null;
@@ -77,7 +84,7 @@ export interface CarrinhoContext {
   limparCarrinho: () => void;
   obterTotal: () => number;
 }
-
+ 
 // Contexto de autenticação
 export interface AuthContext {
   usuario: Usuario | null;
