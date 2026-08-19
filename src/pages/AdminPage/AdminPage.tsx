@@ -19,8 +19,6 @@ export const AdminPage = () => {
   const [tempo, setTempo] = useState('30-40 min');
   const [nota, setNota] = useState<number | ''>('');
   const [taxa, setTaxa] = useState<number | ''>('');
-  const [imagemCapa, setImagemCapa] = useState('');
-  const [imagemPerfil, setImagemPerfil] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editNome, setEditNome] = useState('');
   const [editEndereco, setEditEndereco] = useState('');
@@ -31,8 +29,6 @@ export const AdminPage = () => {
   const [editTempo, setEditTempo] = useState('30-40 min');
   const [editNota, setEditNota] = useState<number | ''>('');
   const [editTaxa, setEditTaxa] = useState<number | ''>('');
-  const [editImagemCapa, setEditImagemCapa] = useState('');
-  const [editImagemPerfil, setEditImagemPerfil] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -42,13 +38,11 @@ export const AdminPage = () => {
   const [produtoDescricao, setProdutoDescricao] = useState('');
   const [produtoPreco, setProdutoPreco] = useState<number | ''>('');
   const [produtoDisponivel, setProdutoDisponivel] = useState(true);
-  const [produtoImagemUrl, setProdutoImagemUrl] = useState('');
   const [editingProdutoId, setEditingProdutoId] = useState<number | null>(null);
   const [editProdutoNome, setEditProdutoNome] = useState('');
   const [editProdutoDescricao, setEditProdutoDescricao] = useState('');
   const [editProdutoPreco, setEditProdutoPreco] = useState<number | ''>('');
   const [editProdutoDisponivel, setEditProdutoDisponivel] = useState(true);
-  const [editProdutoImagemUrl, setEditProdutoImagemUrl] = useState('');
 
   useEffect(() => {
     if (!usuario || usuario.role !== 'admin') return;
@@ -120,8 +114,6 @@ export const AdminPage = () => {
       if (tempo) payload.tempo = tempo;
       if (nota !== '') payload.nota = Number(nota);
       if (taxa !== '') payload.taxa = Number(taxa);
-      if (imagemCapa) payload.imagemCapa = imagemCapa;
-      if (imagemPerfil) payload.imagemPerfil = imagemPerfil;
 
       const novo = await api.criarRestaurante(payload);
       setRestaurantes((prev) => [...prev, novo]);
@@ -134,8 +126,6 @@ export const AdminPage = () => {
       setTempo('30-40 min');
       setNota('');
       setTaxa('');
-      setImagemCapa('');
-      setImagemPerfil('');
     } catch (err) {
       setError('Erro ao criar restaurante');
     } finally {
@@ -158,8 +148,6 @@ export const AdminPage = () => {
         disponivel: produtoDisponivel,
         restauranteId: selectedRestauranteId,
       };
-      if (produtoDescricao) payload.descricao = produtoDescricao;
-      if (produtoImagemUrl) payload.imagemUrl = produtoImagemUrl;
 
       const novo = await api.criarProduto(payload);
       setProdutos((prev) => [...prev, novo]);
@@ -167,7 +155,6 @@ export const AdminPage = () => {
       setProdutoDescricao('');
       setProdutoPreco('');
       setProdutoDisponivel(true);
-      setProdutoImagemUrl('');
     } catch (err) {
       setError('Erro ao criar prato');
     } finally {
@@ -183,8 +170,6 @@ export const AdminPage = () => {
         preco: Number(editProdutoPreco),
         disponivel: editProdutoDisponivel,
       };
-      if (editProdutoDescricao) payload.descricao = editProdutoDescricao;
-      if (editProdutoImagemUrl) payload.imagemUrl = editProdutoImagemUrl;
 
       const updated = await api.atualizarProduto(id, payload);
       setProdutos((prev) => prev.map((p) => p.id === id ? updated : p));
@@ -229,8 +214,6 @@ export const AdminPage = () => {
           <input placeholder="Tempo" value={tempo} onChange={(e) => setTempo(e.target.value)} />
           <input placeholder="Nota" value={nota as any} onChange={(e) => setNota(e.target.value === '' ? '' : Number(e.target.value))} />
           <input placeholder="Taxa" value={taxa as any} onChange={(e) => setTaxa(e.target.value === '' ? '' : Number(e.target.value))} />
-          <input placeholder="URL da imagem de capa" value={imagemCapa} onChange={(e) => setImagemCapa(e.target.value)} />
-          <input placeholder="URL da imagem de perfil" value={imagemPerfil} onChange={(e) => setImagemPerfil(e.target.value)} />
           <button type="submit" disabled={loading}>{loading ? 'Criando...' : 'Criar'}</button>
         </form>
 
@@ -266,8 +249,6 @@ export const AdminPage = () => {
                     setEditTempo(r.tempo || '30-40 min');
                     setEditNota(r.nota ?? '');
                     setEditTaxa(r.taxa ?? '');
-                    setEditImagemCapa(r.imagemCapa || '');
-                    setEditImagemPerfil(r.imagemPerfil || '');
                   }}>{editingId === r.id ? 'Fechar' : 'Editar'}</button>
                   <button className={styles.primary} onClick={async () => {
                     if (!confirm('Confirma exclusão do restaurante?')) return;
@@ -295,8 +276,6 @@ export const AdminPage = () => {
                     <input value={editTempo} onChange={(e) => setEditTempo(e.target.value)} placeholder="Tempo" />
                     <input value={editNota as any} onChange={(e) => setEditNota(e.target.value === '' ? '' : Number(e.target.value))} placeholder="Nota" />
                     <input value={editTaxa as any} onChange={(e) => setEditTaxa(e.target.value === '' ? '' : Number(e.target.value))} placeholder="Taxa" />
-                    <input value={editImagemCapa} onChange={(e) => setEditImagemCapa(e.target.value)} placeholder="URL da imagem de capa" />
-                    <input value={editImagemPerfil} onChange={(e) => setEditImagemPerfil(e.target.value)} placeholder="URL da imagem de perfil" />
                     <div className={styles.rowActions}>
                       <button onClick={async () => {
                         try {
@@ -308,8 +287,6 @@ export const AdminPage = () => {
                           if (editTempo) payload.tempo = editTempo;
                           if (editNota !== '') payload.nota = Number(editNota);
                           if (editTaxa !== '') payload.taxa = Number(editTaxa);
-                          payload.imagemCapa = editImagemCapa;
-                          payload.imagemPerfil = editImagemPerfil;
 
                           const updated = await api.atualizarRestaurante(r.id, payload);
                           setRestaurantes((prev) => prev.map((p) => p.id === r.id ? updated : p));
@@ -367,11 +344,7 @@ export const AdminPage = () => {
                 step="0.01"
                 required 
               />
-              <input
-                placeholder="URL da imagem do prato"
-                value={produtoImagemUrl}
-                onChange={(e) => setProdutoImagemUrl(e.target.value)}
-              />
+
               <label style={{display: 'flex', alignItems: 'center', gap: 8}}>
                 <input 
                   type="checkbox" 
@@ -388,13 +361,7 @@ export const AdminPage = () => {
                 <li key={p.id} className={styles.restaurantItem}>
                   <div className={styles.restaurantHeader}>
                     <div className={styles.restaurantInfo}>
-                      {p.imagemUrl && (
-                        <img
-                          src={p.imagemUrl}
-                          alt={p.nome}
-                          style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover' }}
-                        />
-                      )}
+                     
                       <div>
                         <div className={styles.restaurantName}>{p.nome}</div>
                         <div className={styles.chip}>
@@ -410,7 +377,6 @@ export const AdminPage = () => {
                         setEditProdutoDescricao(p.descricao || '');
                         setEditProdutoPreco(p.preco || '');
                         setEditProdutoDisponivel(p.disponivel || true);
-                        setEditProdutoImagemUrl(p.imagemUrl || '');
                       }}>
                         {editingProdutoId === p.id ? 'Fechar' : 'Editar'}
                       </button>
@@ -438,11 +404,7 @@ export const AdminPage = () => {
                           placeholder="Preço" 
                           step="0.01"
                         />
-                        <input
-                          value={editProdutoImagemUrl}
-                          onChange={(e) => setEditProdutoImagemUrl(e.target.value)}
-                          placeholder="URL da imagem do prato"
-                        />
+                       
                         <label style={{display: 'flex', alignItems: 'center', gap: 8}}>
                           <input 
                             type="checkbox" 

@@ -42,7 +42,7 @@ export const RegistroPage = () => {
 
     try {
       await registrar(nome, email, senha);
-      navigate('/');
+      navigate('/login');
     } catch (error: unknown) {
       setErro(getErrorMessage(error, 'Erro ao registrar'));
     } finally {

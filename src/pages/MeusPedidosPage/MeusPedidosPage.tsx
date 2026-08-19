@@ -24,7 +24,7 @@ const statusLabels: { [key: string]: string } = {
   em_preparo: 'Em Preparo',
   saiu_entrega: 'Saiu para Entrega',
   entregue: 'Entregue',
-  cancelado: 'Cancelado',
+  cancelado: 'celado',
 };
 
 export const MeusPedidosPage = () => {
@@ -65,6 +65,7 @@ export const MeusPedidosPage = () => {
 
     setCancelandoId(pedidoId);
     try {
+      navigate('/');
       const pedidoAtualizado = await api.cancelarPedido(pedidoId);
       setPedidos((prev) =>
         prev.map((p) => (p.id === pedidoId ? pedidoAtualizado : p))
